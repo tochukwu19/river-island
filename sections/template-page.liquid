@@ -1,0 +1,42 @@
+{% style %}
+  .poster {
+    width: 100%;
+    background-image: url("{% if section.settings.poster == blank %} {{ "pageposter.png" |  file_img_url: "master" }} {% else %} {{ section.settings.poster | img_url: '1920x1080' }} {% endif"%}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+{% endstyle %}
+
+<div>
+  <div class="poster h-[300px] md:h-[516px]"></div>
+
+  <div class="page-container w-full my-16">
+    <div class="page w-[95%] flex flex-col md:flex-row items-start justify-around mr-auto">
+        <div class="w-[90%] mb-8 md:mb-0 mx-auto md:mx-0 md:w-[20%]">
+            <h1 class="text-lg font-bold uppercase">
+                {{ page.title }}
+            </h1>
+        </div>
+
+        <div class="w-[90%] mx-auto md:mx-0 md:w-[50%] [&>p>img]:w-full">
+            {{ page.content }}
+        </div>  
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Template Page",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "poster",
+        "label": "Poster",
+        "info": "This is the poster image for the page."
+      }
+    ]
+  }
+{% endschema %}

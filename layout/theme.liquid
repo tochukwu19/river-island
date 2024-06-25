@@ -42,7 +42,6 @@
       body {
         font-family: "Clash Grotesk"
         , sans-serif;
-        font-weight: bold;
       }
 
       .logo{
@@ -55,11 +54,14 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
   </head>
   <body>
+    {% section "announcement" %}
     {% section "header" %}
 
     <main role="main">
       {{ content_for_layout }}
     </main>
+
+    {% section "footer" %}
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
