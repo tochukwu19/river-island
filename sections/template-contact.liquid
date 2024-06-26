@@ -1,0 +1,160 @@
+<div class="cwidth flex flex-col md:flex-row items-start my-8 mx-auto justify-between">
+    <div class="w-[90%] mx-auto md:mx-0 md:w-[20%] mb-8 md:mb-0">
+        <h1 class="uppercase font-extrabold text-lg">{{ page.title }}</h1>
+    </div>
+
+    <div class="w-[90%] mx-auto md:mx-0 md:w-[50%] mb-8 md:mb-0">
+        {% form 'contact' %}
+
+            {% if form.errors %}
+        
+              <div class="border p-5">
+                <div class="flex flex-row items-center w-full my-3">
+                  <div class="text-red-500">
+                    {% render 'icon-error' %}
+                  </div>
+        
+                  <div class="text-sm font-medium ml-3">
+                    Oh no! Your message was not sent. Please try again.
+                  </div>
+                </div>
+                <ul class="px-4 mb-3 ml-7 list-decimal">
+                  {% for error in form.errors %}
+                    <li>
+                      <span>
+                        {{ form.errors.messages[error] }}
+                      </span>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% elsif form.posted_successfully? %}
+              <div class="flex flex-row items-center w-full my-3 p-3">
+                <div class="text-green-500">
+                  {% render 'icon-success' %}
+                </div>
+        
+                <div class="text-sm font-medium ml-3">Your message was sent successfully</div>
+              </div>
+            {% endif %}
+        
+            <div>
+                <p class="mb-3 uppercase font-extrabold text-lg">{{ section.settings.title }}</p>
+            </div>
+        
+            <div class="max-w-6xl mt-8 mx-auto justify-center flex-1 items-center">
+              <div class="flex px-1 mb-3 flex-col sm:flex-row justify-between gap-[20px]">
+                <div class="w-full md:w-1/2">
+                  <label class="uppercase text-xs text-gray-500 font-medium hidden" for="contact_first_name">First Name</label>
+                  <input
+                    class="border-b outline-none py-3 mb-3 text-gray-700 w-full"
+                    type="text"
+                    placeholder="First Name"
+                    name="contact[first_name]"
+                    id="contact_first_name">
+                </div>
+        
+                <div class="w-full md:w-1/2">
+                  <label class="uppercase text-xs text-gray-500 font-medium hidden" for="contact_last_name">Last Name</label>
+                  <input
+                    class="border-b outline-none py-3 mb-3 text-gray-700 w-full"
+                    type="text"
+                    placeholder="Last Name"
+                    name="contact[last_name]"
+                    id="contact_last_name">
+                </div>
+              </div>
+            </div>
+        
+            <div class="max-w-6xl mx-auto justify-center flex-1 items-center">
+              <div class="flex px-1 mb-3 flex-col sm:flex-row justify-between gap-[20px]">
+                <div class="w-full md:w-1/2">
+                    <label class="uppercase text-xs text-gray-500 font-medium hidden" for="contact_email">Email Address</label>
+                    <input
+                    class="border-b outline-none py-3 mb-3 text-gray-700 w-full"
+                    type="email"
+                    placeholder="Email Address"
+                    name="contact[email]"
+                    id="contact_email">
+                </div>
+        
+                <div class="w-full md:w-1/2">
+                  <label class="uppercase text-xs text-gray-500 font-medium hidden" for="contact_phone">Phone Number</label>
+                  <input
+                    class="border-b outline-none py-3 mb-3 text-gray-700 w-full"
+                    type="tel"
+                    placeholder="Phone Number"
+                    name="contact[phone]"
+                    id="contact_phone">
+                </div>
+              </div>
+            </div>
+        
+            <div class="flex px-1 mb-3">
+              <div class="w-full">
+                <label class="uppercase text-xs text-gray-500 font-medium hidden" for="contact_message">Additional Information</label>
+                <textarea
+                  class="border-b outline-none py-3 mb-3 text-gray-700 w-full"
+                  name="contact[body]"
+                  placeholder="Additional Information"
+                  id="contact_message"></textarea>
+              </div>
+            </div>
+        
+            <div class="flex px-1 mb-3">
+              <div class="w-full">
+                <button type="submit" class="w-1/2 cursor-pointer px-4 py-2 border text-base font-medium bg-black text-white hover:text-white hover:bg-gray-700">
+                  Submit Form
+                </button>
+              </div>
+            </div>
+        
+          {% endform %}
+    </div>
+
+  <div class="w-[90%] mx-auto md:mx-0 md:w-[20%]">
+    <h1 class="font-extrabold text-lg">OTHER FORM OF CONTACT</h1>
+
+    <div class="my-4 font-bold">
+        <h2 class="text-[#6B7280]">Call</h2>
+        <p>123 456 789 012</p>
+    </div>
+
+    <div class="my-4 font-bold">
+        <h2 class="text-[#6B7280]">Email</h2>
+        <p>hello@riverisland.com</p>
+    </div>
+
+    <div class="my-4 font-bold">
+        <h2 class="text-[#6B7280]">Customer Care Email</h2>
+        <p>info@riverisland.com</p>
+    </div>
+
+    <div class="my-4 font-bold">
+        <h2 class="text-[#6B7280]">Address</h2>
+        <p>By appointment only</p>
+        <p>Email info@riverisland.com to schedule</p>
+        <p>1005 S Santa Fe Ave. Los Angeles, CA 90021</p>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Contact form",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "General Enquiries"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Contact form",
+        "category": "Contact"
+      }
+    ]
+  }
+{% endschema %}

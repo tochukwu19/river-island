@@ -1,0 +1,79 @@
+{% style %}
+    .collections {
+  
+      .grid {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      }
+  
+      .collection {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 100%;
+      }
+  
+      .poster {
+        background-image: url("{{ 'collections.jpg' | file_img_url: 'master' }}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 100%;
+      }
+    }
+  {% endstyle %}
+  
+  <div class="collections">
+    <div class="poster h-[300px] w-full text-white text-center flex items-center flex-col justify-center">
+      <h1 class="text-4xl uppercase">{{ section.settings.title }}</h1>
+      {% include 'breadcrumbs' %}
+    </div>
+  
+    <div class="collections my-8 w-full mx-auto flex flex-col items-center justify-center">
+      {% paginate collections by 3 %}
+        <div class="w-[90%] mx-auto grid gap-8">
+          {% for collection in collections %}
+            <a href="{{ collection.url }}" data-aos="fade-down" data-aos-delay="{{ forloop.index0 |  times: 100}}">
+              <div class="collection relative h-[400px] w-auto" style="background-image: url('{{ collection | img_url: 'large' }}')">
+                <h2 class="absolute text-3xl text-white font-bold bottom-[50px] right-10">{{ collection.title }}</h2>
+                <p class="absolute text-lg text-white font-bold bottom-[20px] right-10">{{ collection.products_count }} Products</p>
+              </div>
+            </a>
+  
+          {% else %}
+            <p>No collections found.</p>
+          {% endfor %}
+        </div>
+  
+        <div class="pagination [&>a]:block [&>a]:w-fit [&>a]:mx-auto [&>a]:text-white [&>a]:px-6 [&>a]:py-2 [&>a]:bg-[#CB8161] [&>a]:font-bold [&>a]:mt-6 [&>a]:text-xl flex items-center justify-center gap-4 my-4">
+          {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}" class="btn">Previous</a>
+  
+          {% else %}
+            <a class="btn disabled">Previous</a>
+          {% endif %}
+  
+          {% if paginate.next %}
+            <a href="{{ paginate.next.url }}" class="btn">Next</a>
+  
+          {% else %}
+            <a class="btn disabled">Next</a>
+          {% endif %}
+        </div>
+      {% endpaginate %}
+    </div>
+  </div>
+  
+  
+  {% schema %}
+    {
+      "name": "Template Collections",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Shop Collection"
+        }
+      ]
+    }
+  {% endschema %}

@@ -26,7 +26,7 @@
 
       @font-face {
         font-family: 'EDANE';
-        src: url({{ "EDANERegular.woff2" | file_url}}) format('woff2');
+        src: url({{ "EDANERegular.woff2" | file_url}}), url("https://cdn.shopify.com/s/files/1/0704/9773/0818/files/EDANERegular.woff2?v=1719330416") format('woff2');
         font-weight: normal;
         font-style: normal;
         font-display: swap;
@@ -34,7 +34,7 @@
 
       @font-face {
         font-family: 'Clash Grotesk';
-        src: url({{ "ClashGroteskRegular.woff2" | file_url }}) format('woff2');
+        src: url({{ "ClashGroteskRegular.woff2" | file_url }}), url("https://cdn.shopify.com/s/files/1/0704/9773/0818/files/ClashGroteskRegular.woff2?v=1719330422") format('woff2');
         font-weight: normal;
         font-style: normal;
         font-display: swap;
@@ -51,6 +51,10 @@
         font-family: "EDANE"
         , sans-serif;
         font-weight: bold;
+      }
+
+      .cwidth{
+        width: 97%;
       }
     </style>
 
