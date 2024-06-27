@@ -1,0 +1,43 @@
+{% style %}
+    .subcollection {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0 0 20px 0;
+        position: relative;
+        width: 300px;
+    
+    
+        .subcollection-image {
+            width: inherit;
+            height: inherit;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: all 0.5s ease-in-out;
+        }
+    
+        .subcollection:hover .subcollection-image{
+            transform: scale(1.1);
+        }
+    }
+    {% endstyle %}
+    
+    <div>
+        <div class="subcollection">
+            {% assign subcollection = collections[handle] %}
+            {% assign subcollection_image = subcollection.image | default: subcollection.featured_image %}
+            {% assign subcollection_image = subcollection_image | img_url: 'master' %}
+            <div class="subcollection">
+                <div class="overflow-hidden w-full h-[300px]">
+                    <div class="subcollection-image" style="background-image: url({{ subcollection_image }})"></div>
+                </div>
+                <a href="{{ subcollection.url }}">
+                    <div class="subcollection-title">
+                        <h2>{{ subcollection.title }}</h2>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>

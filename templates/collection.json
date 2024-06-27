@@ -2,7 +2,7 @@
 {
   "sections": {
     "collection": {
-      "type": "template-collection#",
+      "type": "template-collection",
       "settings": {
       }
     }

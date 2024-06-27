@@ -1,1 +1,35 @@
-living room
+{% style %}
+
+{% endstyle %}
+
+<div x-data="productLoader()" x-init="loadProducts()">
+    <div>
+        <!-- Example buttons to change handle and reload products -->
+        <button @click="changeHandle('sofa')">Load Sofa Products</button>
+        <button @click="changeHandle('chairs')">Load Chair Products</button>
+    </div>
+
+    <div class="products" x-ref="products">
+        <!-- Products will be loaded here dynamically -->
+    </div>
+</div>
+
+<script>
+    function productLoader() {
+        return {
+            handle: 'sofa',
+            loadProducts() {
+                fetch(`/pages/product-loader-template?handle=${this.handle}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        this.$refs.products.innerHTML = html;
+                    });
+            },
+            changeHandle(newHandle) {
+                this.handle = newHandle;
+                this.loadProducts();
+            }
+        };
+    }
+</script>
+
