@@ -1,0 +1,13 @@
+
+{
+  "sections": {
+    "collection-dining-room": {
+      "type": "template-collection-dining-room",
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "collection-dining-room"
+  ]
+}

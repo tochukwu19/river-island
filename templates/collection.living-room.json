@@ -1,0 +1,13 @@
+
+{
+  "sections": {
+    "collection-living-room": {
+      "type": "template-collection-living-room",
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "collection-living-room"
+  ]
+}
