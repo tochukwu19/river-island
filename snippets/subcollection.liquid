@@ -6,7 +6,7 @@
         align-items: center;
         margin: 0 0 20px 0;
         position: relative;
-        width: 300px;
+        width: 100%;
     
     
         .subcollection-image {
@@ -26,17 +26,15 @@
     
     <div>
         <div class="subcollection">
-            {% assign subcollection = collections[handle] %}
+            {% assign subcollection = collection %}
             {% assign subcollection_image = subcollection.image | default: subcollection.featured_image %}
             {% assign subcollection_image = subcollection_image | img_url: 'master' %}
             <div class="subcollection">
-                <div class="overflow-hidden w-full h-[300px]">
+                <a href="{{ subcollection.url }}" class="overflow-hidden w-full h-[400px] cursor-pointer">
                     <div class="subcollection-image" style="background-image: url({{ subcollection_image }})"></div>
-                </div>
-                <a href="{{ subcollection.url }}">
-                    <div class="subcollection-title">
-                        <h2>{{ subcollection.title }}</h2>
-                    </div>
+                </a>
+                <a href="{{ subcollection.url }}" class="subcollection-title w-full text-left mt-4 cursor-pointer">
+                    <h2 class="uppercase font-bold">{{ subcollection.title }}</h2>
                 </a>
             </div>
         </div>

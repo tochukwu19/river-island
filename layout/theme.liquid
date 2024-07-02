@@ -1,3 +1,5 @@
+{% comment %} npx tailwindcss -i ./src/tailwind.css -o ./assets/application.css --watch {% endcomment %}
+
 <!doctype html>
 <html>
   <head>
@@ -55,12 +57,18 @@
 
       .cwidth{
         width: 97%;
+        margin: 0 auto;
+
+        @media only screen and (max-width: 600px){
+          width: 90%;
+        }
       }
     </style>
 
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
   </head>
   <body>
+    {% comment %} do not show nav when on product  template page {% endcomment %}
     {% section "announcement" %}
     {% section "header" %}
 
@@ -69,6 +77,11 @@
     </main>
 
     {% section "footer" %}
+
+
+    {% if template contains 'collection' or  template contains 'search'%}
+      <script src="{{ 'collection-load-more.js' | asset_url }}" defer="defer"></script>
+    {%endif%}
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>

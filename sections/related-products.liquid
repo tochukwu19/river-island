@@ -1,0 +1,125 @@
+{% style %}
+    .product-recommendations {
+      text-align: left;
+  
+      h2 {
+        /* margin: auto; */
+      }
+  
+      .card {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 100%;
+      }
+  
+      .overlay {
+        opacity: 0;
+        transition: all ease-in-out 0.3s;
+        z-index: -1;
+      }
+  
+      .card-container:hover .overlay {
+        opacity: 1;
+        z-index: 1;
+      }
+    }
+  
+    .product-card {
+      .card {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 100%;
+      }
+    }
+  {% endstyle %}
+  
+  {% if section.settings.show_recommendations %}
+    <div class="cwidth product-recommendations my-8" data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4&intent=related">
+      {%- if recommendations.performed? and recommendations.products_count > 0 -%}
+        <h2 class="uppercase font-bold mb-8 mt-16">Related Products</h2>
+  
+        <div class="w-full mx-auto grid grid-cols-[1fr_1fr] grid-rows-[1fr_1fr] md:grid-rows-[1fr] md:grid-cols-[1fr_1fr_1fr_1fr] gap-8">
+          {% for product in recommendations.products %}
+            {% render "product-card"
+              , product: product %}
+          {% else %}
+            <p>No products found.</p>
+          {% endfor %}
+        </div>
+      {%- endif -%}
+    </div>
+  {% endif %}
+  
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const productRecommendationsSection = document.querySelector('.product-recommendations');
+      if (!productRecommendationsSection) return;
+    
+      const observer = new IntersectionObserver((entries, observer) => {
+        if (!entries[0].isIntersecting) return;
+        observer.unobserve(entries[0].target);
+    
+        const url = entries[0].target.dataset.url;
+    
+        fetch(url)
+          .then(response => response.text())
+          .then(text => {
+            const html = document.createElement('div');
+            html.innerHTML = text;
+            const recommendations = html.querySelector('.product-recommendations');
+    
+            if (recommendations && recommendations.innerHTML.trim().length) {
+              entries[0].target.innerHTML = recommendations.innerHTML;
+              attachEventListeners(); // Attach event listeners after content is loaded
+            }
+          })
+          .catch(e => {
+            console.error('Error fetching recommendations:', e);
+          });
+      }, { rootMargin: '0px 0px 200px 0px' });
+    
+      observer.observe(productRecommendationsSection);
+      attachEventListeners(); // Attach event listeners on initial load
+    });
+    
+    const attachEventListeners = () => {
+      document.querySelectorAll('.add_to_cart').forEach(item => {
+        item.addEventListener('click', event => {
+          event.preventDefault(); // Prevent default form submission
+          const id = item.getAttribute('data-id');
+          fetch(`/cart/add.js?id=${id}&quantity=1`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            window.location.href = '/cart';
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+        });
+      });
+    };
+
+  </script>
+  
+  {% schema %}
+    {
+      "name": "Related products",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_recommendations",
+          "label": "Show recommendations",
+          "default": true
+        }
+      ]
+    }
+  {% endschema %}

@@ -1,7 +1,7 @@
 {% style %}
   .footer-logo {
     text-align: justify;
-    font-size: clamp(5rem, 19.5vw, 20vw);
+    font-size: clamp(9.5vw, 19.5vw, 20vw);
     font-weight: 700;
   }
 
@@ -13,11 +13,11 @@
 {% endstyle %}
 
 <div class="footer h-auto py-8 w-full">
-  <div class="container flex flex-col items-center justify-around mx-auto">
+  <div class="container gap-[20px] md:gap-0 flex flex-col items-center justify-around mx-auto">
     <div class="footer-logo flex justify-center items-center gap-2 truncate mb-8"></div>
 
     <div class="w-[90%] md:w-[97%] mx-auto flex justify-between items-start flex-col md:flex-row">
-      <nav class="flex w-[90%] md:w-[50%] gap-4 flex-col md:flex-row justify-between items-start [&>div>h1]:mb-4 flex-wrap">
+      <nav class="flex w-full md:w-[50%] mx-auto gap-4 flex-col md:flex-row justify-between items-start [&>div>h1]:mb-4 flex-wrap">
         {% for link in linklists['footer'].links %}
           {% if link.links != blank %}
             <div class="mb-8 md:mb-0 [&>ul>a]:block [&>ul>a]:text-[#777777] [&>ul>a]:my-2">
@@ -34,7 +34,7 @@
         {% endfor %}
       </nav>
 
-      <div class="w-[90%] md:w-[30%] mb-8 md:mb-0">
+      <div class="w-full md:w-[30%] mx-auto mb-8 md:mb-0">
         <h1 class="font-bold">Subscribe to Our Newsletter</h1>
         <p class="mb-4">Join us for exclusive product features, studio insights, and early access.</p>
         <div class="w-full relative">

@@ -1,0 +1,220 @@
+<style>
+  .results {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 320px));
+    gap: 20px;
+
+    @media only screen and (max-width: 500px) {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
+    }
+  }
+
+  #load-more {
+    text-align: center;
+    display: block;
+    margin: 40px auto;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: black;
+    border: 2px solid #000;
+    cursor: pointer;
+  }
+
+  #load-more:hover {
+    background-color: #000;
+    color: #fff;
+  }
+
+  .load-more_spinner {
+    display: none;
+    width: 35px;
+    height: 35px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3a3a3a;
+    border-radius: 50%;
+    margin: 30px auto;
+    animation: 0.5s spin linear infinite;
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg)
+    }
+    100% {
+      transform: rotate(360deg)
+    }
+  }
+
+  .rotate-180 {
+    transform: rotate(180deg);
+    transition: transform 0.3s;
+  }
+
+  .rotate-90 {
+    transform: rotate(-90deg);
+    transition: transform 0.3s;
+
+    @media only screen and (max-width: 600px) {
+      transform: rotate(-180deg);
+    }
+  }
+</style>
+
+<div class="search" x-data="{showFilters: false}">
+  {% paginate search.results by 4 %}
+    <div class="cwidth !my-8">
+      <div class="w-full md:w-[20%] flex justify-between items-center [&>p]:font-bold">
+        <p>SEARCH RESULTS FOR:</p>
+        <p>{{ search.results_count | prepend: '00' | slice: -2, 2 }}</p>
+      </div>
+
+      <h1 class="text-6xl font-bold uppercase">“{{ search.terms | escape }}”</h1>
+    </div>
+
+    <div class="cwidth !mb-8 !mt-8 py-4 border-y border-solid border-[#D1D5DB] flex justify-between items-center">
+      <!-- Filter button -->
+      <div class="relative h-[25px] w-[120px] md:w-[150px] flex justify-start items-center cursor-pointer" @click="showFilters = !showFilters">
+        <button class="font-bold absolute">Show Filters</button>
+        <div class="absolute right-[5px]" :class="{ 'rotate-90': showFilters }">
+          {% render "icon-down" %}
+        </div>
+      </div>
+
+      <!-- Sorting dropdown -->
+      <div class="flex md:items-center gap-4 flex-col md:flex-row items-start">
+        <p class="font-bold text-[15px] md:text-[16px]">Sort By</p>
+        <div class="relative w-[150px] mb-[10px] md:mb-0 flex gap-2 justify-start items-center">
+          <select id="sort-by" class="w-full appearance-none absolute font-bold text-[#4B5563] outline-none">
+
+            {% assign sort_by = search.sort_by | default: search.default_sort_by %}
+
+            {% for option in search.sort_options %}
+              {% if option.name != "Featured" %}
+                <option
+                  value="{{ option.value }}"
+                  {% if option.value == sort_by %}
+                  selected="selected"
+                  {% endif %}>
+                  {{ option.name }}
+                </option>
+              {% endif %}
+            {% endfor %}
+          </select>
+
+          <div class="absolute right-[5px]">
+            {% render "icon-down" %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cwidth">
+      {% if search.performed %}
+        {% if search.results.size > 0 %}
+          <div class="flex flex-col md:flex-row gap-16 justify-between items-start w-full my-4">
+            <div
+              class="w-[90%] md:w-[30%]"
+              x-cloak
+              x-show="showFilters">
+              {% render "searchfilter"
+                , search: search %}
+            </div>
+
+            <div class="grid results products w-full justify-center md:justify-start" data-next-url="{{paginate.next.url}}">
+              {% for item in search.results %}
+                {% case item.object_type %}
+                  {% when 'product' %}
+                    {% render 'product-card'
+                      , product: item %}
+
+                  {% when 'article' %}
+                    <div class="w-full pb-6 px-3">
+                      <div class="bg-white overflow-hidden">
+                        {% if item.image %}
+                          <a href="{{ item.url }}">
+                            <img
+                              class="w-full h-[300px] object-cover"
+                              src="{{ item.image | img_url: 'medium' }}"
+                              alt="{{ item.image.alt }}">
+                          </a>
+                        {% else %}
+                          {{ 'image' | placeholder_svg_tag: 'w-full h-[300px] object-cover bg-gray-100' }}
+                        {% endif %}
+
+                        <div class="p-4">
+                          <h1 class="text-xl text-[#CB8161] font-medium mt-4">{{ item.title }}</h1>
+
+                          {% if article.excerpt.size > 0 %}
+                            <p class="text-[#777] font-medium">{{ item.excerpt | strip_html | truncatewords: 15 }}</p>
+                          {% else %}
+                            <p class="text-[#777] font-medium">{{ item.content | strip_html | truncatewords: 15 }}</p>
+                          {% endif %}
+                        </div>
+
+
+                      </div>
+
+                    </div>
+
+                  {% when 'page' %}
+                    <div class="w-full h-[300px] p-4 text-center flex flex-col justify-center items-center shadow-lg">
+                      <a href="{{ item.url }}" class="pageTitle text-xl text-[#CB8161] hover:text-[#777]">
+                        {{ item.title }}
+                      </a>
+
+                      <p class="text-[#777]">{{ item.content | strip_html | truncatewords: 15 }}</p>
+                    </div>
+                {% else %}
+
+                  {% endcase %}
+                {% endfor %}
+              </div>
+            </div>
+
+          {% else %}
+            <div class="text-center my-4">
+              <p class="font-bold mx-auto text-center">No results found for the search term: {{ search.terms | escape }}. Try to use a different keyword</p>
+            </div>
+          {% endif %}
+
+        {% else %}
+          <div class="text-center my-4">
+            <p class="font-bold mx-auto text-center">No search term provided. Please enter a search term in the search bar above.</p>
+          </div>
+        {% endif %}
+
+        {% if search.results.size > 0 %}
+          <div class="load-more mx-auto">
+            <button class="btn" id="load-more">Load More</button>
+            <div class="load-more_spinner"></div>
+          </div>
+        {% endif %}
+
+      </div>
+    {% endpaginate %}
+  </div>
+
+
+  <script>
+    // filter dropdown
+    Shopify.queryParams = {};
+    
+    if(location.search.length) {
+      var params = location.search.substr(1).split('&');
+    
+      for(var i = 0; i < params.length; i++) {
+        var keyValue = params[i].split('=');
+    
+        if(keyValue.length) {
+          Shopify.queryParams[decodeURIComponent(keyValue[0])] = decodeURIComponent(keyValue[1]);
+        }
+      }
+    }
+    
+    
+    // Update sort_by query parameter on select change
+    document.querySelector('#sort-by').addEventListener('change', function(e) {
+      var value = e.target.value;
+    
+      Shopify.queryParams.sort_by = value;
+      location.search = new URLSearchParams(Shopify.queryParams).toString();
+    });
+  </script>

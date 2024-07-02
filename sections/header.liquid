@@ -19,19 +19,28 @@
                 <nav x-data="{ open: false }" class="hidden lg:flex space-x-10">
 
                     {% for link in main_menu_linklist %}
-                        <div class="relative">
-                            <a
-                            href='{{ link.url }}'
-                                class="text-base font-bold {% if link.active == true %} text-[#CB8161] {% endif %} {% if link.title == "Search" %} text-[#777] {% else %} text-black {% endif %}">{{
-                                link.title}}</a>
-                        </div>
+                        {% if link.title != "Search" %}
+                            <div class="relative">
+                                <a
+                                href='{{ link.url }}'
+                                    class="text-base font-bold {% if link.active == true %} text-[#CB8161] {% endif %} text-black">{{
+                                    link.title}}</a>
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 </nav>
-
             </div>
 
 
             <div class="hidden md:flex items-center justify-end space-x-5">
+                <div class="hidden md:flex items-center justify-start gap-2">
+                    <input
+                        class="search-input w-[100px] h-10 px-3 text-base placeholder-gray-500 focus:outline-none"
+                        type="text" placeholder="Search" 
+                    />
+                    <div class="search-btn text-gray-500 cursor-pointer">{% render "icon-search" %}</div>
+                </div>
+                
                 <a href="{{ routes.account_login_url }}" class="text-gray-500 hover:text-gray-900">
                     {% render "user" %}
                 </a>
@@ -71,6 +80,14 @@
                         </div>
                     </div>
 
+                    <div class="md:hidden flex items-center justify-between w-full gap-2">
+                        <input
+                            class="search-input-mobile w-[90%] h-10 pr-3 text-base placeholder-gray-500 focus:outline-none"
+                            type="text" placeholder="Search" 
+                        />
+                        <div class="search-btn-mobile text-gray-500 cursor-pointer">{% render "icon-search" %}</div>
+                    </div>
+
                     <!-- NAVIGATION LINKS FOR MOBILE MENU -->
                     <div class="pt-3">
                         <nav class="grid gap-y-7">
@@ -103,11 +120,14 @@
 
                         {% else %}
 
-                        <a 
-                            href='{%if link.title == 'Cart' %} {{ routes.cart_url }} {% elsif link.title == 'My Account' %} {{ routes.account_login_url }} {% else %}  {{ link.url }} {% endif %}'
-                            class="-m-3 p-3 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
-                            {{ link.title}}
-                        </a>
+                            {% if link.title != "Search" %}
+                                <div class="relative">
+                                    <a
+                                    href='{{ link.url }}'
+                                        class="text-base font-bold {% if link.active == true %} text-black {% endif %} text-[#777]">{{
+                                        link.title}}</a>
+                                </div>
+                            {% endif %}
 
                         {% endif %}
 
@@ -118,6 +138,25 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    const searchInput = document.querySelector('.search-input');
+    const searchBtn = document.querySelector('.search-btn');
+
+    const searchInputM = document.querySelector('.search-input-mobile');
+    const searchBtnM = document.querySelector('.search-btn-mobile');
+
+    searchBtn.addEventListener('click', () => {
+        window.location.href = `/search?q=${searchInput.value}`
+    });
+
+    searchBtnM.addEventListener('click', () => {
+        window.location.href = `/search?q=${searchInputM.value}`
+    });
+
+</script>
+
 
 {% schema %}
 {
