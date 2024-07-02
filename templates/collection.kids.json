@@ -1,0 +1,14 @@
+
+{
+    "sections": {
+      "collection-dining-room": {
+        "type": "template-collection-kids",
+        "settings": {
+        }
+      }
+    },
+    "order": [
+      "collection-dining-room"
+    ]
+  }
+  

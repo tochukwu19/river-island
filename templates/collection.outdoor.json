@@ -1,0 +1,14 @@
+
+{
+    "sections": {
+      "collection-dining-room": {
+        "type": "template-collection-outdoor",
+        "settings": {
+        }
+      }
+    },
+    "order": [
+      "collection-dining-room"
+    ]
+  }
+  
