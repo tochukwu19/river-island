@@ -1,0 +1,10 @@
+
+{%- render 'product-card', product: product -%}
+
+{% comment %} restricting the section to only be used on the product template {% endcomment %}
+
+{% schema %}
+  {
+    "templates": ["product"]
+  }
+{% endschema %}

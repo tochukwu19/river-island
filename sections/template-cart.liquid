@@ -1,0 +1,52 @@
+<style>
+  .collection {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 320px));
+    gap: 20px;
+
+    @media only screen and (max-width: 500px) {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
+    }
+  }
+</style>
+
+{% if cart.item_count > 0 %}
+  <div class="cwidth">
+    <h1>cart</h1>
+    <div class="w-full flex flex-col md:flex-row justify-between items-start">
+
+      <form
+        action="/cart"
+        method="post"
+        novalidate
+        class="w-full"
+        >
+        <div class="w-full grid collection justify-center md:justify-start">
+          {% for item in cart.items %}
+            {% render "product-card-cart"
+              , product: item
+              , product_index: forloop.index %}
+          {% endfor %}
+        </div>
+        <div class="w-[90%] md:w-[30%] mx-auto md:mx-0 mt-8 md:mt-0">
+          <h1 class="font-bold">Order Summary</h1>
+          <div class="flex justify-between items-center my-4 [&>p]:font-bold">
+            <p class="text-[#4B5563]">Subtotal</p>
+            <p>{{ cart.total_price | money }}</p>
+          </div>
+          <button
+            type="submit"
+            name="checkout"
+            class="text-center font-bold w-full px-4 py-2 hover:text-black text-white hover:bg-white bg-black border border-solid border-black mb-4">Checkout</button>
+          <div>
+            <p>
+              It should be noted that purchases on this site are not intended for commercial entities.
+            </p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+{% else %}
+  <h2>cart</h2>
+  Cart is empty
+{% endif %}
