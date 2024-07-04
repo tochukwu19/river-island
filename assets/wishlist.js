@@ -10,17 +10,20 @@ const selectors = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('[Shopify Wishlist] Loaded ✅');
   initButtons();
   initGrid();
 });
 
 document.addEventListener('shopify-wishlist:updated', (event) => {
   console.log('[Shopify Wishlist] Wishlist Updated ✅', event.detail.wishlist);
-  initGrid();
+  initGrid(); // Re-initialize grid after wishlist update
 });
 
 document.addEventListener('shopify-wishlist:init-product-grid', (event) => {
   console.log('[Shopify Wishlist] Wishlist Product List Loaded ✅', event.detail.wishlist);
+
+  attachAddToCartListeners(); // Attach Add to Cart listeners after component is initialized
 });
 
 document.addEventListener('shopify-wishlist:init-buttons', (event) => {
@@ -30,15 +33,15 @@ document.addEventListener('shopify-wishlist:init-buttons', (event) => {
 const fetchProductCardHTML = (handle) => {
   const productTileTemplateUrl = `/products/${handle}?view=card`;
   return fetch(productTileTemplateUrl)
-  .then((res) => res.text())
-  .then((res) => {
-    const text = res;
-    const parser = new DOMParser();
-    const htmlDocument = parser.parseFromString(text, 'text/html');
-    const productCard = htmlDocument.documentElement.querySelector(selectors.productCard);
-    return productCard.outerHTML;
-  })
-  .catch((err) => console.error(`[Shopify Wishlist] Failed to load content for handle: ${handle}`, err));
+    .then((res) => res.text())
+    .then((res) => {
+      const text = res;
+      const parser = new DOMParser();
+      const htmlDocument = parser.parseFromString(text, 'text/html');
+      const productCard = htmlDocument.documentElement.querySelector(selectors.productCard);
+      return productCard.outerHTML;
+    })
+    .catch((err) => console.error(`[Shopify Wishlist] Failed to load content for handle: ${handle}`, err));
 };
 
 const setupGrid = async (grid) => {
@@ -48,7 +51,7 @@ const setupGrid = async (grid) => {
   const wishlistProductCards = responses.join('');
   grid.innerHTML = wishlistProductCards;
   grid.classList.add(GRID_LOADED_CLASS);
-  initButtons();
+  initButtons(); // Initialize buttons after grid content is loaded
 
   const event = new CustomEvent('shopify-wishlist:init-product-grid', {
     detail: { wishlist: wishlist }
@@ -77,6 +80,7 @@ const initButtons = () => {
   const buttons = document.querySelectorAll(selectors.button) || [];
   if (buttons.length) setupButtons(buttons);
   else return;
+
   const event = new CustomEvent('shopify-wishlist:init-buttons', {
     detail: { wishlist: getWishlist() }
   });
@@ -117,4 +121,29 @@ const wishlistContains = (handle) => {
 
 const resetWishlist = () => {
   return setWishlist([]);
+};
+
+const attachAddToCartListeners = () => {
+  document.querySelectorAll('.add_to_cart').forEach(item => {
+    item.addEventListener('click', event => {
+      event.preventDefault(); // Prevent default form submission
+      const id = item.getAttribute('data-id');
+      fetch(`/cart/add.js?id=${id}&quantity=1`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        window.location.href = '/cart';
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+  });
+
+  console.log('[Shopify Wishlist] Add to Cart Listeners Attached ✅')
 };

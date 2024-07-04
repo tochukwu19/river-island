@@ -11,12 +11,14 @@
 
 {% if cart.item_count > 0 %}
   <div class="cwidth">
-    <h1>cart</h1>
+    <div>
+        {% render "cart-nav" %}
+    </div>
     <div class="w-full flex flex-col md:flex-row justify-between items-start">
 
       <form
-        action="/cart"
-        method="post"
+        action="{{ routes.cart_url }}"
+        method="POST"
         novalidate
         class="w-full"
         >

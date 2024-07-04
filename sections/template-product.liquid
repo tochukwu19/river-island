@@ -167,16 +167,19 @@
               <button
                 type="submit"
                 name="add"
-                class="w-full px-6 py-4 bg-gray-900 text-white hover:bg-gray-700 rounded-sm my-2"
+                class="flex items-center justify-center gap-2 w-full px-6 py-4 bg-gray-900 text-white hover:bg-gray-700 hover:text-white rounded-sm my-2"
                 {% if selected_variant.available == false %}
                 disabled
                 {% endif %}>
+                {% render "cart" %}
                 {% if selected_variant.available == false %}
                   Sold out
                 {% else %}
                   Add to cart
                 {% endif %}
               </button>
+
+              {% render "button-wishlist", product: product %}
             </div>
           </div>
         </div>
@@ -215,6 +218,49 @@
   </div>
 </div>
 
+{% schema %}
+  {
+    "name": "Product",
+    "blocks": [
+      {
+        "type": "vendor",
+        "name": "Vendor",
+        "limit": 1
+      },
+      {
+        "type": "title",
+        "name": "Title",
+        "limit": 1
+      },
+      {
+        "type": "price",
+        "name": "Price",
+        "limit": 1
+      },
+      {
+        "type": "variant_selector",
+        "name": "Variant Selector",
+        "limit": 1
+      }, {
+        "type": "quantity",
+        "name": "Quantity",
+        "limit": 1
+      }, {
+        "type": "description",
+        "name": "Description",
+        "limit": 1
+      }, {
+        "type": "checkout_buttons",
+        "name": "Checkout Buttons",
+        "limit": 1
+      }, {
+        "type": "breadcrumbs",
+        "name": "Breadcrumbs",
+        "limit": 1
+      }
+    ]
+  }
+{% endschema %}
 
 {% comment %} Cancel cart immediate redirect {% endcomment %}
 <script>
@@ -442,46 +488,3 @@
 </script>
 
 
-{% schema %}
-  {
-    "name": "Product",
-    "blocks": [
-      {
-        "type": "vendor",
-        "name": "Vendor",
-        "limit": 1
-      },
-      {
-        "type": "title",
-        "name": "Title",
-        "limit": 1
-      },
-      {
-        "type": "price",
-        "name": "Price",
-        "limit": 1
-      },
-      {
-        "type": "variant_selector",
-        "name": "Variant Selector",
-        "limit": 1
-      }, {
-        "type": "quantity",
-        "name": "Quantity",
-        "limit": 1
-      }, {
-        "type": "description",
-        "name": "Description",
-        "limit": 1
-      }, {
-        "type": "checkout_buttons",
-        "name": "Checkout Buttons",
-        "limit": 1
-      }, {
-        "type": "breadcrumbs",
-        "name": "Breadcrumbs",
-        "limit": 1
-      }
-    ]
-  }
-{% endschema %}
