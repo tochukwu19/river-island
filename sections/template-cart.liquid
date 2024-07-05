@@ -1,27 +1,31 @@
-<style>
-  .collection {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 320px));
-    gap: 20px;
-
-    @media only screen and (max-width: 500px) {
-      grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
-    }
-  }
-</style>
-
 {% if cart.item_count > 0 %}
   <div class="cwidth">
     <div>
-        {% render "cart-nav" %}
+      {% render "cart-nav" %}
     </div>
-    <div class="w-full flex flex-col md:flex-row justify-between items-start">
-
+    <div class="w-full">
       <form
         action="{{ routes.cart_url }}"
         method="POST"
         novalidate
-        class="w-full"
-        >
+        class="w-full flex flex-col-reverse md:flex-row-reverse justify-between items-start">
+        <div class="w-[90%] md:w-[30%] mx-auto md:mx-0 mt-8 md:mt-0">
+          <h1 class="font-bold">{{ section.settings.cart_order_sum }}</h1>
+          <div class="flex justify-between items-center my-4 [&>p]:font-bold">
+            <p class="text-[#4B5563]">{{ section.settings.cart_subtotal }}</p>
+            <p>{{ cart.total_price | money }}</p>
+          </div>
+          <button
+            type="submit"
+            name="checkout"
+            class="text-center font-bold w-full px-4 py-2 hover:text-black text-white hover:bg-white bg-black border border-solid border-black mb-4">{{ section.settings.cart_checkout  }}</button>
+          <div>
+            <p>
+              {{ section.settings.cart_message }}
+            </p>
+          </div>
+        </div>
+
         <div class="w-full grid collection justify-center md:justify-start">
           {% for item in cart.items %}
             {% render "product-card-cart"
@@ -29,26 +33,51 @@
               , product_index: forloop.index %}
           {% endfor %}
         </div>
-        <div class="w-[90%] md:w-[30%] mx-auto md:mx-0 mt-8 md:mt-0">
-          <h1 class="font-bold">Order Summary</h1>
-          <div class="flex justify-between items-center my-4 [&>p]:font-bold">
-            <p class="text-[#4B5563]">Subtotal</p>
-            <p>{{ cart.total_price | money }}</p>
-          </div>
-          <button
-            type="submit"
-            name="checkout"
-            class="text-center font-bold w-full px-4 py-2 hover:text-black text-white hover:bg-white bg-black border border-solid border-black mb-4">Checkout</button>
-          <div>
-            <p>
-              It should be noted that purchases on this site are not intended for commercial entities.
-            </p>
-          </div>
-        </div>
       </form>
     </div>
   </div>
 {% else %}
-  <h2>cart</h2>
-  Cart is empty
+<div class="flex w-[60%] md:w-[25%] mx-auto flex-col h-[300px] justify-center items-center">
+  <h2 class="font-bold text-lg mb-8">{{ section.settings.cart_empty }}</h2>
+  <a href="{{ routes.collections_url }}" class="text-center font-bold w-full px-4 py-2 hover:text-black text-white hover:bg-white bg-black border border-solid border-black mb-4">{{ section.settings.cart_empty_button }}</a>
+</div>  
 {% endif %}
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": [
+      {
+          "type": "text",
+          "id": "cart_order_sum",
+          "label": "Cart Order Summary Title",
+          "default": "Order Summary"
+        },{
+          "type": "text",
+          "id": "cart_subtotal",
+          "label": "Cart Subtotal",
+          "default": "Subtotal"
+        },{
+          "type": "text",
+          "id": "cart_checkout",
+          "label": "Cart Checkout Button",
+          "default": "Checkout"
+        },{
+          "type": "text",
+          "id": "cart_empty",
+          "label": "Cart Empty Title",
+          "default": "Your cart is empty."
+        },{
+          "type": "text",
+          "id": "cart_empty_button",
+          "label": "Cart Empty Button",
+          "default": "Start shopping"
+        },{
+          "type": "text",
+          "id": "cart_message",
+          "label": "Cart Message",
+          "default": "It should be noted that purchases on this site are not intended for commercial entities."
+        }
+    ]
+}
+{% endschema %}

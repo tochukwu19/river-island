@@ -1,0 +1,85 @@
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+
+<style></style>
+
+<div class="cwidth !mt-32">
+  <div class="w-full my-16 flex flex-col md:flex-row justify-start gap-4 md:gap-16 items-center">
+    <h1 class="w-[90%] md:w-[20%] text-2xl uppercase font-bold">
+      Made From Incredible Materials
+    </h1>
+    <p class="w-[90%] md:w-[50%]">
+      Our pieces are crafted using only the finest resources, ensuring durability, sustainability, and unmatched beauty. Each item is meticulously designed and constructed to withstand the test of time, providing you with timeless elegance and comfort.
+    </p>
+  </div>
+
+  <div class="featured-collection">
+    <swiper-container class="mySwiper" init="false">
+      {% for collection in collections limit: 6 %}
+        {% if collection.title != "Featured" %}
+          <swiper-slide>
+            {% render "subcollection"
+              , collection: collection %}
+          </swiper-slide>
+        {% endif %}
+      {% endfor %}
+    </swiper-container>
+  </div>
+</div>
+
+<script>
+    const swiperEl = document.querySelector('swiper-container')
+  
+    const params = {
+      injectStyles: [`
+      .swiper-pagination{
+        display: flex;
+        justify-content: flex-end;
+      }
+  
+      .swiper-pagination-bullet {
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+        font-size: 18px;
+        color: #000;
+        background: transparent;
+        opacity: 1;
+      }
+  
+      .swiper-pagination-bullet-active {
+        color: #777;
+      }
+      `],
+      // change slidesperview based on window size
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+        1024: {
+          slidesPerView: 4,
+          spaceBetween: 20,
+        },
+      },
+      pagination: {
+        clickable: true,
+        renderBullet: function (index, className) {
+          // prepend 0 to index if less than 10
+          index = index + 1;
+          if (index < 10) {
+            index = '0' + index;
+          }
+          return '<span class="' + className + '">' + (index) + "</span>";
+        },
+      },
+    }
+  
+    Object.assign(swiperEl, params)
+  
+    swiperEl.initialize();
+</script>

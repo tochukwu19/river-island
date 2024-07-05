@@ -1,19 +1,20 @@
 <div class="flex justify-start items-center text-lg font-bold gap-8 mt-8 mb-8">
-    <a href="/cart" class="flex items-center gap-2 {% if template.name == "cart" %} text-[#777] {% endif %}">
-        <p>Your Cart</p>
-        <span>{{ cart.item_count | prepend: '00' | slice: -2, 2 }}</span>
-    </a>
+  <a href="/cart" class="flex items-center gap-2 {% if template.name == "cart" %} text-[#777] {% endif %}">
+    <p>Your Cart</p>
+    <span>{{ cart.item_count | prepend: '00' | slice: -2, 2 }}</span>
+  </a>
 
-    <a href="/pages/wishlist" class="flex items-center gap-2 {% if page.template_suffix == "wishlist" %} text-[#777] {% endif %}">
-        <p>Your Wishlist</p>
-        <span class="wishlist-count">00</span>
-    </a>
+  <a href="/pages/wishlist" class="flex items-center gap-2 {% if page.template_suffix == "wishlist" %} text-[#777] {% endif %}">
+    <p>Your Wishlist</p>
+    <span class="wishlist-count">00</span>
+  </a>
 </div>
+
 
 <script>
     const wishlist = localStorage.getItem('shopify-wishlist') ? localStorage.getItem('shopify-wishlist') : [];
     const wishlist_count = wishlist.split(',').length.toString().padStart(2, '0')
-
+  
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.wishlist-count').textContent = wishlist_count
     })

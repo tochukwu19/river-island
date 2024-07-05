@@ -4,9 +4,27 @@
             "type": "template-hero",
             "settings": {
             }
+        },
+        "material": {
+            "type": "template-material",
+            "settings": {
+            }
+        },
+        "featured-collection": {
+            "type": "template-featured-collection",
+            "settings": {
+            }
+        },
+        "instagram-feed": {
+            "type": "template-instagram-feed",
+            "settings": {
+            }
         }
     },
     "order": [
-        "hero"
+        "hero",
+        "material",
+        "featured-collection",
+        "instagram-feed"
     ]
 }
