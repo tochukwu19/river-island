@@ -1,30 +1,46 @@
+
 {
     "sections": {
         "hero": {
             "type": "template-hero",
-            "settings": {
-            }
+            "settings": {}
         },
         "material": {
             "type": "template-material",
-            "settings": {
-            }
+            "settings": {}
         },
         "featured-collection": {
             "type": "template-featured-collection",
-            "settings": {
-            }
+            "settings": {}
         },
         "instagram-feed": {
             "type": "template-instagram-feed",
-            "settings": {
-            }
+            "settings": {}
+        },
+        "1720220099b1a44079": {
+            "type": "apps",
+            "blocks": {
+                "instafeed_app_block_m3r93y": {
+                    "type": "shopify:\/\/apps\/instafeed\/blocks\/app-block\/c447db20-095d-4a10-9725-b5977662c9d5",
+                    "settings": {
+                        "title": "",
+                        "title_color": "",
+                        "alignment": "center",
+                        "html_area": ""
+                    }
+                }
+            },
+            "block_order": [
+                "instafeed_app_block_m3r93y"
+            ],
+            "settings": {}
         }
     },
     "order": [
         "hero",
         "material",
         "featured-collection",
-        "instagram-feed"
+        "instagram-feed",
+        "1720220099b1a44079"
     ]
 }
