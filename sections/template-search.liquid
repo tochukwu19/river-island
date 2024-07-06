@@ -4,7 +4,10 @@
     gap: 20px;
 
     @media only screen and (max-width: 500px) {
-      grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
+      grid-template-columns: 1fr 1fr;
+    }
+    @media only screen and (max-width: 400px) {
+      grid-template-columns: 1fr;
     }
   }
 

@@ -61,7 +61,7 @@
             <a href="{{ product.url | within: collections.all }}" class="text-left text-lg hover:text-[#777]">
               {{ product.product.title }}
             </a>
-            <div class="w-fit flex flex-col md:flex-row justify-center items-left md:gap-4 font-bold uppercase">
+            <div class="w-fit flex justify-center items-left md:gap-4 font-bold uppercase">
               <p class="">{{ product.price | money_with_currency }}</p>
               <p>({{ product.quantity }})</p>
             </div>
