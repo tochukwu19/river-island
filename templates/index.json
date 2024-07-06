@@ -25,7 +25,9 @@
           "lighting",
           "bedroom",
           "dining-room",
-          "frontpage"
+          "frontpage",
+          "accessories",
+          "office"
         ],
         "number_of_slides": 6
       }
