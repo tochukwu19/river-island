@@ -37,7 +37,8 @@
       "settings": {
         "title": "Featured Collections",
         "collections": [
-
+          "chairs",
+          "tables"
         ]
       }
     },
