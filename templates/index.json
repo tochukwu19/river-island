@@ -1,61 +1,76 @@
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
 {
-    "sections": {
-        "hero": {
-            "type": "template-hero",
-            "blocks": {
-                "featured_title": {
-                    "type": "featured_title"
-                },
-                "featured_product_title": {
-                    "type": "featured_product_title"
-                },
-                "featured_button": {
-                    "type": "featured_button"
-                }
-            },
-            "block_order": [
-                "featured_title",
-                "featured_product_title",
-                "featured_button"
-            ],
-            "settings": {}
-        },
-        "material": {
-            "type": "template-material",
-            "settings": {}
-        },
-        "featured-collection": {
-            "type": "template-featured-collection",
-            "settings": {}
-        },
-        "instagram-feed": {
-            "type": "template-instagram-feed",
-            "settings": {}
-        },
-        "1720220099b1a44079": {
-            "type": "apps",
-            "blocks": {
-                "instafeed_app_block_m3r93y": {
-                    "type": "shopify:\/\/apps\/instafeed\/blocks\/app-block\/c447db20-095d-4a10-9725-b5977662c9d5",
-                    "settings": {
-                        "title": "",
-                        "title_color": "",
-                        "alignment": "center",
-                        "html_area": ""
-                    }
-                }
-            },
-            "block_order": [
-                "instafeed_app_block_m3r93y"
-            ],
-            "settings": {}
-        }
+  "sections": {
+    "hero": {
+      "type": "template-hero",
+      "settings": {
+        "number_of_slides": 3,
+        "shop_now_text": "Shop now"
+      }
     },
-    "order": [
-        "hero",
-        "material",
-        "featured-collection",
-        "instagram-feed",
-        "1720220099b1a44079"
-    ]
+    "material": {
+      "type": "template-material",
+      "settings": {
+        "title": "Made From Incredible Materials",
+        "description": "Our pieces are crafted using only the finest resources, ensuring durability, sustainability, and unmatched beauty. Each item is meticulously designed and constructed to withstand the test of time, providing you with timeless elegance and comfort.",
+        "collections": [
+          "lighting",
+          "bedroom",
+          "dining-room",
+          "frontpage"
+        ],
+        "number_of_slides": 6
+      }
+    },
+    "featured-collection": {
+      "type": "template-featured-collection",
+      "settings": {
+        "title": "Featured Collections",
+        "collections": [
+
+        ]
+      }
+    },
+    "instagram-feed": {
+      "type": "template-instagram-feed",
+      "settings": {
+        "title": "Check Us Out On Instagram",
+        "username": "riverisland"
+      }
+    },
+    "1720220099b1a44079": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_m3r93y": {
+          "type": "shopify:\/\/apps\/instafeed\/blocks\/app-block\/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "alignment": "center",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_m3r93y"
+      ],
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "material",
+    "featured-collection",
+    "instagram-feed",
+    "1720220099b1a44079"
+  ]
 }
