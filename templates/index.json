@@ -11,6 +11,28 @@
   "sections": {
     "hero": {
       "type": "template-hero",
+      "blocks": {
+        "featured_title_NBt8dR": {
+          "type": "featured_title",
+          "settings": {
+          }
+        },
+        "featured_product_title_aCndrR": {
+          "type": "featured_product_title",
+          "settings": {
+          }
+        },
+        "featured_button_gUhtnJ": {
+          "type": "featured_button",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "featured_title_NBt8dR",
+        "featured_product_title_aCndrR",
+        "featured_button_gUhtnJ"
+      ],
       "settings": {
         "number_of_slides": 3,
         "shop_now_text": "Shop now"
