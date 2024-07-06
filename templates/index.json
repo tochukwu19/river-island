@@ -1,8 +1,23 @@
-
 {
     "sections": {
         "hero": {
             "type": "template-hero",
+            "blocks": {
+                "featured_title": {
+                    "type": "featured_title"
+                },
+                "featured_product_title": {
+                    "type": "featured_product_title"
+                },
+                "featured_button": {
+                    "type": "featured_button"
+                }
+            },
+            "block_order": [
+                "featured_title",
+                "featured_product_title",
+                "featured_button"
+            ],
             "settings": {}
         },
         "material": {

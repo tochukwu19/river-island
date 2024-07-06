@@ -105,42 +105,7 @@
     </div>
   {% endif %}
 
-  <div class="cwidth !mb-8 !mt-8 py-4 border-y border-solid border-[#D1D5DB] flex justify-between items-center">
-    <!-- Filter button -->
-    <div class="relative h-[25px] w-[120px] md:w-[150px] flex justify-start items-center cursor-pointer" @click="showFilters = !showFilters">
-      <button class="font-bold absolute">Show Filters</button>
-      <div class="absolute right-[5px]" :class="{ 'rotate-90': showFilters }">
-        {% render "icon-down" %}
-      </div>
-    </div>
-
-    <!-- Sorting dropdown -->
-    <div class="flex md:items-center gap-4 flex-col md:flex-row items-start">
-      <p class="font-bold text-[15px] md:text-[16px]">Sort By</p>
-      <div class="relative w-[150px] mb-[10px] md:mb-0 flex gap-2 justify-start items-center">
-        <select id="sort-by" class="w-full appearance-none absolute font-bold text-[#4B5563] outline-none">
-
-          {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
-
-          {% for option in collection.sort_options %}
-            {% if option.name != "Featured" %}
-              <option
-                value="{{ option.value }}"
-                {% if option.value == sort_by %}
-                selected="selected"
-                {% endif %}>
-                {{ option.name }}
-              </option>
-            {% endif %}
-          {% endfor %}
-        </select>
-
-        <div class="absolute right-[5px]">
-          {% render "icon-down" %}
-        </div>
-      </div>
-    </div>
-  </div>
+  {% render "filter-sort", collection: collection %}
 
   <div class="cwidth cards my-8 w-full mx-auto flex flex-col items-center justify-center">
     {% paginate collection.products by 2 %}
@@ -253,34 +218,10 @@
         },
       },
     }
-  
-    Object.assign(swiperEl, params)
-  
-    swiperEl.initialize();
-</script>
 
-<script>
-    // filter dropdown
-    Shopify.queryParams = {};
-    
-    // Preserve existing query parameters
-    if (location.search.length) {
-      var params = location.search.substr(1).split('&');
-    
-      for (var i = 0; i < params.length; i++) {
-        var keyValue = params[i].split('=');
-    
-        if (keyValue.length) {
-          Shopify.queryParams[decodeURIComponent(keyValue[0])] = decodeURIComponent(keyValue[1]);
-        }
-      }
+    if (swiperEl){
+      Object.assign(swiperEl, params)
+
+      swiperEl.initialize();
     }
-    
-    // Update sort_by query parameter on select change
-    document.querySelector('#sort-by').addEventListener('change', function(e) {
-      var value = e.target.value;
-    
-      Shopify.queryParams.sort_by = value;
-      location.search = new URLSearchParams(Shopify.queryParams).toString();
-    });
-</script>
+  </script>

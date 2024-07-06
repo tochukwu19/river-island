@@ -1,8 +1,25 @@
-<style>
-
-</style>
+<style></style>
 
 <div class="h-[100px] font-bold cwidth flex flex-col md:flex-row justify-start md:gap-16 items-center">
-    <h2 class="text-2xl md:w-[150px]">Check Us Out On Instagram</h2>
-    <a class="text-xl">@riverisland</a>
+  <h2 class="text-2xl md:w-[150px]">{{ section.settings.title }}</h2>
+  <a class="text-xl">@{{ section.settings.username }}</a>
 </div>
+
+{% schema %}
+  {
+    "name": "Instagram Feed",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Check Us Out On Instagram"
+      }, {
+        "type": "text",
+        "id": "username",
+        "label": "Instagram Username",
+        "default": "riverisland"
+      }
+    ]
+  }
+{% endschema %}

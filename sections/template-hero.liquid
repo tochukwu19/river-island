@@ -6,8 +6,8 @@
     height: calc(100vh - 124px);
 
     @media only screen and (max-width: 600px) {
-        height: 60vh;
-    } 
+      height: 60vh;
+    }
 
     img {
       filter: brightness(75%);
@@ -40,15 +40,26 @@
   <div class="hero-main w-full">
     <div class="swiper mySwiper">
       <div class="swiper-wrapper">
-        {% for product in collections["featured"].products limit: 3 %}
+        {% for product in collections["featured"].products limit: section.settings.number_of_slides %}
           <div class="swiper-slide flex flex-col relative">
             <img src="{{ product.selected_or_first_available_variant.image.src | img_url: 'master' }}" alt="{{ product.title }}">
             <div class="flex text-[14px] md:text-[16px] justify-start items-center gap-2 absolute bottom-5 left-5 text-white">
-              <h1>{{ collections["featured"].title }}</h1>
-              <p>|</p>
-              <h2>{{ product.title }}</h2>
-              <p>|</p>
-              <a class="underline" href="{{ product.url }}">Shop now</a>
+              {% for block in section.blocks %}
+                {% case block.type %}
+                  {% when "featured_title" %}
+                    <h1>{{ collections["featured"].title }}</h1>
+                    <p>|</p>
+                    
+                  {% when "featured_product_title" %}
+                    <h2>{{ product.title }}</h2>
+                    <p>|</p>
+
+                  {% when "featured_button" %}
+                    <a class="underline" href="{{ product.url }}">{{ section.settings.shop_now_text }}</a>
+                    {% else %}
+
+                {% endcase %}
+              {% endfor %}
             </div>
           </div>
         {% endfor %}
@@ -56,6 +67,43 @@
     </div>
   </div>
 </div>
+
+{% schema %}
+  {
+    "name": "Hero",
+    "blocks": [
+      {
+        "type": "featured_title",
+        "name": "Featured Title",
+        "limit": 1
+      }, {
+        "type": "featured_product_title",
+        "name": "Featured Product Title",
+        "limit": 1
+      }, {
+        "type": "featured_button",
+        "name": "Featured Button",
+        "limit": 1
+      }
+    ],
+    "settings": [
+      {
+        "type": "range",
+        "id": "number_of_slides",
+        "label": "Number of slides",
+        "default": 3,
+        "min": 1,
+        "max": 10,
+        "step": 1
+      }, {
+        "type": "text",
+        "id": "shop_now_text",
+        "label": "Shop Now Text",
+        "default": "Shop now"
+      }
+    ]
+  }
+{% endschema %}
 
 <script>
     var swiper = new Swiper(".mySwiper", {
