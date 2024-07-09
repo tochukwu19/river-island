@@ -1,0 +1,148 @@
+<style>
+  .newsletter-poster {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .contact-form {
+    width: 70%;
+  }
+</style>
+
+<div id="newsletter-popup" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+  <div class="h-[500px] w-[900px] flex items-center justify-center">
+    <div class="hidden md:block w-full h-full newsletter-poster" style="background-image: url('{{ "newsletter_poster.png" |  file_img_url: "master" }}')"></div>
+
+    <div class="text-center bg-white p-8 h:auto md:h-full w-full max-w-md">
+      <div class="flex justify-between items-center mb-4">
+        <button id="close-newsletter-popup" class="ml-auto text-gray-500 hover:text-gray-700">
+          {% render "icon-close" %}
+        </button>
+      </div>
+      <div class="h-auto md:h-3/4 w-inherit flex-col flex items-center justify-center">
+        <div class="block md:hidden mb-4 w-[80%] h-[227px] newsletter-poster" style="background-image: url('{{ "newsletter_poster.png" |  file_img_url: "master" }}')"></div>
+        <h2 class="logo mb-4 md:mb-8">River Island</h2>
+        <p class="font-bold text-lg my-4">Sign up for our newsletter and get 10% off your first order</p>
+        {% form 'customer', action: '/contact', return_to: routes.root_url %}
+          <div class="mb-4">
+            <label for="email" class="hidden block text-sm font-medium text-gray-700">Email</label>
+            <input
+              type="email"
+              name="contact[email]"
+              id="email"
+              placeholder="Enter email address"
+              class="mt-1 block w-full px-3 py-2 border-b border-[#D1D5DB] shadow-sm focus:outline-none focus:ring-black focus:border-black sm:text-sm"
+              required />
+          </div>
+          <div>
+            <input
+              type="submit"
+              value="Continue"
+              class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-black hover:bg-white hover:text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" />
+          </div>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% comment %} Showing popup on scroll {% endcomment %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+  const popup = document.getElementById('newsletter-popup');
+  const closePopupBtn = document.getElementById('close-newsletter-popup');
+  
+    const showPopup = () => {
+      popup.classList.remove('hidden');
+      popup.style.display = 'flex'; // Ensure flex display for centering
+      localStorage.setItem('newsletterPopupShown', 'true');
+    }
+  
+  // Scroll-based trigger
+  const handleScroll = () => {
+    const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+    if (scrollPercentage > 50 && !localStorage.getItem('newsletterPopupShown')) {
+      showPopup();
+      window.removeEventListener('scroll', handleScroll); // Remove event listener after showing popup
+    }
+  };
+  
+  // Close the popup
+  closePopupBtn.addEventListener('click', function() {
+    popup.classList.add('hidden');
+    popup.style.display = 'none';
+  });
+  
+  // Optional: Close popup when clicking outside of it
+  window.addEventListener('click', function(event) {
+    if (event.target === popup) {
+      popup.classList.add('hidden');
+      popup.style.display = 'none';
+    }
+  });
+  
+  // Attach scroll event listener
+  window.addEventListener('scroll', handleScroll);
+  });
+</script>
+
+
+{% comment %} Form interception {% endcomment %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('#newsletter-popup form');
+        const popup = document.getElementById('newsletter-popup');
+        const closePopupBtn = document.getElementById('close-newsletter-popup');
+        const successMessage = document.createElement('p');
+        const errorMessage = document.createElement('p');
+
+        successMessage.style.marginTop = '1rem';
+        errorMessage.style.marginTop = '1rem';
+        
+        // Success and Error message styling
+        successMessage.style.color = 'green';
+        errorMessage.style.color = 'red';
+        
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+        
+            const formData = new FormData(form);
+            const actionUrl = form.getAttribute('action') ;
+        
+            fetch(actionUrl, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json', // Ensure JSON response
+            }
+            })
+            .then(response => {
+            if (!response.ok) {
+                return response.json().then(json => { throw new Error(json.message || 'Form submission failed') });
+            }
+            return response.json();
+            })
+            .then(data => {
+            // Show success message
+            successMessage.textContent = 'Thank you for subscribing!';
+            form.appendChild(successMessage);
+            errorMessage.remove(); // Remove any existing error message
+        
+            // Hide the popup after a few seconds
+            setTimeout(() => {
+                popup.classList.add('hidden');
+                popup.style.display = 'none';
+            }, 3000);
+            })
+            .catch(error => {
+            // Show error message
+            errorMessage.textContent = error.message;
+            form.appendChild(errorMessage);
+            successMessage.remove(); // Remove any existing success message
+            });
+        });
+    });
+</script>

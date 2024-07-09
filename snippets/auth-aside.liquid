@@ -1,0 +1,35 @@
+<style></style>
+
+<div class="w-[90%] md:w-[20%]">
+  {% if template.name == "login" %}
+
+    <div class="w-full hidden md:block">
+      <div>
+        <h1 class="text-xl mb-4 font-bold">Don't have an account</h1>
+        <p>Don't have a River Island account yet? Create now and enjoy all the benefits now!</p>
+      </div>
+
+      <a href="{{ routes.account_register_url }}" class="my-4 w-full inline-flex justify-center py-2 px-4 border shadow-sm text-sm font-medium hover:text-white hover:bg-black bg-white text-black border-black">Continue</a>
+    </div>
+
+    <div class="md:hidden flex flex-col text-center">
+      <a class="font-bold mb-8" href="{{ routes.account_register_url }}">Don't have an account? Create one</a>
+    </div>
+
+  {% else %}
+    <div class="w-full hidden md:block">
+      <div>
+        <h1 class="text-xl mb-4 font-bold">Already have an account</h1>
+        <p>Have an account already? Login by entering your details below</p>
+      </div>
+
+      <a href="{{ routes.account_login_url }}" class="my-4 w-full inline-flex justify-center py-2 px-4 border shadow-sm text-sm font-medium hover:text-white hover:bg-black bg-white text-black border-black">Continue</a>
+    </div>
+
+    <div class="md:hidden flex flex-col text-center">
+      <a class="font-bold mb-8" href="{{ routes.account_login_url }}">Have an account? Login</a>
+
+      <a href="{{ routes.root_url }}">Continue as guest</a>
+    </div>
+  {% endif %}
+</div>

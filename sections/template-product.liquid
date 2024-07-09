@@ -179,7 +179,8 @@
                 {% endif %}
               </button>
 
-              {% render "button-wishlist", product: product %}
+              {% render "button-wishlist"
+                , product: product %}
             </div>
           </div>
         </div>
@@ -197,18 +198,14 @@
       <button id="close-popup" class="">{% render "icon-close" %}</button>
     </div>
     <div class="flex items-center justify-start gap-4">
-      {% if selected_variant.image.src %}
-        <img src="{{ selected_variant.image.src | img_url: '100x' }}" alt="{{ selected_variant.title }}" />
-      {% endif %}
-
+      <img
+        id="popup-image"
+        src=""
+        alt="" class="h-[100px] w-[100px] object-cover" />
       <div class="flex flex-col items-between">
-        <p class="font-bold">{{ selected_variant.title }}</p>
-        <div class="flex gap-2 items-center overflow-hidden">
-          {% for tag in product.collections %}
-            <p>{{ tag.title }}</p>
-          {% endfor %}
-        </div>
-        <p class="text-[18px]">{{ selected_variant.price | money_with_currency }}</p>
+        <p id="popup-title" class="font-bold"></p>
+        <div id="popup-tags" class="flex flex-col md:flex-row gap-2 items-center overflow-hidden"></div>
+        <p id="popup-price" class="text-[18px]"></p>
       </div>
     </div>
     <div class="flex justify-between items-center gap-2 mt-4">
@@ -217,6 +214,7 @@
     </div>
   </div>
 </div>
+
 
 {% schema %}
   {
@@ -227,20 +225,17 @@
         "id": "cart_notif_title",
         "label": "Cart notification title",
         "default": "Added to your cart!"
-      },
-      {
+      }, {
         "type": "text",
         "id": "continue_shopping_title",
         "label": "Continue shopping button title",
         "default": "Continue Shopping"
-      },
-      {
+      }, {
         "type": "text",
         "id": "go_to_cart_title",
         "label": "Go to cart button title",
         "default": "Go to cart"
-      },
-      {
+      }, {
         "type": "text",
         "id": "delivery_details",
         "label": "Delivery details",
@@ -257,41 +252,81 @@
   const form = document.getElementById('product-form');
   const popup = document.getElementById('add-to-cart-popup');
   const closePopupBtn = document.getElementById('close-popup');
-  
-    form.addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent the default form submission
-    
-      const formData = new FormData(form);
-      const actionUrl = '/cart/add.js'; // Shopify add-to-cart endpoint
-    
-      fetch(actionUrl, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-          'Accept': 'application/json', // Ensure JSON response
-        }
-      })
-      .then(response => {
-        if (!response.ok) {
-          return response.text().then(text => { throw new Error(text) });
-        }
-        return response.json();
-      })
-      .then(data => {
-        // Show the popup
-        popup.classList.remove('hidden');
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again.');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const formData = new FormData(form);
+    const actionUrl = '/cart/add.js'; // Shopify add-to-cart endpoint
+
+    fetch(actionUrl, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Accept': 'application/json', // Ensure JSON response
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        return response.text().then(text => { throw new Error(text) });
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Get the selected variant details
+      const variantId = formData.get('id');
+
+      const selectedVariant = {{ product | json }}.variants.find(variant => variant.id == variantId);
+
+      if (!selectedVariant) {
+        throw new Error('Selected variant not found');
+      }
+
+      // Update the popup content
+      const popupImage = document.getElementById('popup-image');
+      const popupTitle = document.getElementById('popup-title');
+      const popupTags = document.getElementById('popup-tags');
+      const popupPrice = document.getElementById('popup-price');
+
+      console.log(selectedVariant)
+
+      if (selectedVariant.featured_image) {
+        popupImage.src = selectedVariant.featured_image.src;
+        popupImage.alt = selectedVariant.title;
+        popupImage.style.display = 'block';
+      } else {
+        popupImage.style.display = 'none';
+      }
+
+      const formattedPrice = "{{ selected_variant.price |  money_with_currency }}"
+
+      popupTitle.textContent = selectedVariant.title;
+      popupPrice.textContent = formattedPrice;
+
+      // Update tags if necessary
+      popupTags.innerHTML = '';
+
+      selectedVariant.tags?.forEach(tag => {
+        const tagElement = document.createElement('p');
+        tagElement.textContent = tag;
+        popupTags.appendChild(tagElement);
       });
-    });
-    
-    closePopupBtn.addEventListener('click', function() {
-      popup.classList.add('hidden');
+
+      // Show the popup
+      popup.classList.remove('hidden');
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred: ' + error.message);
     });
   });
+
+  closePopupBtn.addEventListener('click', function() {
+    popup.classList.add('hidden');
+  });
+});
+
 </script>
 
 {% comment %} Custom select script {% endcomment %}
@@ -475,5 +510,3 @@
   
   customElements.define("variant-selector", VariantSelector);
 </script>
-
-

@@ -1,0 +1,129 @@
+<style>
+  .register {
+    form {
+      display: flex;
+      flex-direction: column;
+
+      label:not([for="accepts-marketing"]) {
+        visibility: hidden;
+      }
+
+      input {
+        border-bottom: 1px solid #D1D5DB;
+        padding: 5px;
+        color: #000;
+        outline: none;
+      }
+
+      input:focus {
+        border-bottom: 1px solid #000;
+      }
+
+      input::placeholder {
+        color: #D1D5DB;
+      }
+    }
+  }
+
+  /* Custom checkbox */
+  /* The container */.check-container {
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Hide the browser's default checkbox */
+  .check-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: 2px;
+  }
+
+  /* On mouse-over, add a grey background color */
+  .check-container:hover input ~ .checkmark {
+    border: 2px solid #777;
+  }
+
+  /* When the checkbox is checked, add a blue background */
+  .check-container input:checked ~ .checkmark {
+    background-color: #000;
+  }
+</style>
+
+<div class="cwidth flex flex-col-reverse md:flex-row items-start justify-start gap-16 md:gap-32 !mt-16">
+  {% render "auth-aside" %}
+
+  <div class="register w-[90%] md:w-[40%] mx-auto md:mx-0">
+    <div>
+      <h1 class="text-xl mb-4 font-bold">Don't have an account</h1>
+      <p>Don't have a River Island account yet? Create now and enjoy all the benefits now!</p>
+    </div>
+
+    {% form 'create_customer' %}
+
+      <div class="mt-4">{{ form.errors | default_errors }}</div>
+
+      <label for="email">Email Address</label>
+      <input
+        type="email"
+        placeholder="Enter email address"
+        name="customer[email]"
+        size="30" />
+
+      <label for="password">Password</label>
+      <input
+        type="password"
+        placeholder="Create password"
+        name="customer[password]"
+        size="30" />
+
+      <label for="first_name">First Name</label>
+      <input
+        type="text"
+        placeholder="First name"
+        name="customer[first_name]"
+        size="30" />
+
+      <label for="last_name">Last Name</label>
+      <input
+        type="text"
+        placeholder="Last name"
+        name="customer[last_name]"
+        size="30" />
+
+      <div class="accepts-marketing">
+        <input
+          type="hidden"
+          name="customer[accepts_marketing]"
+          value="false" />
+
+        <label for="accepts-marketing" class="mt-4 check-container flex items-center">
+          <input type="checkbox" id="accepts-marketing" name="customer[accepts_marketing]">
+          <span class='checkmark'></span>
+          I wish to receive River Island news on my e-mail
+        </label> 
+      </div>
+
+      <button type="submit" class="my-4 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-black hover:bg-white hover:text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Create an account</button>
+    {% endform %}
+  </div>
+</div>

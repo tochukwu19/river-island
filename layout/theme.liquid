@@ -188,7 +188,7 @@
     </main>
 
     {% section "footer" %}
-
+    {% render "newsletter-popup" %}
 
     {% if template contains 'collection' or template contains 'search' %}
       <script src="{{ 'collection-load-more.js' | asset_url }}" defer="defer"></script>

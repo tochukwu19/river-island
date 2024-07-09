@@ -38,16 +38,32 @@
         <h1 class="font-bold">Subscribe to Our Newsletter</h1>
         <p class="mb-4">Join us for exclusive product features, studio insights, and early access.</p>
         <div class="w-full relative">
-            <input type="email" placeholder="Email Address" class="absolute w-[90%] bg-transparent border-b border-solid border-gray-700 p-4 text-[#777] outline-none"/>
-            <div class="absolute right-10 top-6 text-[#777]">{% render "icon-right" %}</div>
+          {% form 'customer' %}
+
+            {{ form.errors | default_errors }}
+
+            {% if form.posted_successfully? %}
+              <p class="font-bold">Email Added</p>
+            {% else %}
+              <div class="flex justify-start items-center">
+                <input
+                  type="email"
+                  name="contact[email]"
+                  placeholder="Email Address"
+                  class="w-[90%] bg-transparent border-b border-solid border-gray-700 p-4 text-[#777] outline-none" />
+
+                <button type="submit" class="relative right-[23px] text-[#777]">{% render "icon-right" %}</button>
+              </div>
+            {% endif %}
+          {% endform %}
         </div>
       </div>
     </div>
 
     {% if section.settings.show_disclaimer %}
-        <div class="disclaimer my-8 mt-8">
-            <p class="text-[#6B7280] font-bold">All Right Reserved @2024 - River Island</p>
-        </div>
+      <div class="disclaimer my-8 mt-8">
+        <p class="text-[#6B7280] font-bold">All Right Reserved @2024 - River Island</p>
+      </div>
     {% endif %}
   </div>
 </div>
@@ -62,8 +78,7 @@
         "label": "Title",
         "default": "River Island",
         "info": "This is the footer title."
-      },
-      {
+      }, {
         "type": "checkbox",
         "id": "show_disclaimer",
         "label": "Show Disclaimer",
