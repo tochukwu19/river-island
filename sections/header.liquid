@@ -41,9 +41,17 @@
                     <div class="search-btn text-gray-500 cursor-pointer">{% render "icon-search" %}</div>
                 </div>
                 
-                <a href="{{ routes.account_login_url }}" class="text-gray-500 hover:text-gray-900">
-                    {% render "user" %}
-                </a>
+                {% if customer %}
+
+                    <a href="{{ routes.account_url }}" class="text-gray-500 hover:text-gray-900">
+                        {% render "user" %}
+                    </a>
+
+                    {% else %}
+                    <a href="{{ routes.account_login_url }}" class="text-gray-500 hover:text-gray-900">
+                        {% render "user" %}
+                    </a>
+                {% endif %}
 
                 <a href="/pages/wishlist" class="text-gray-500 hover:text-gray-900">
                     {% render "icon-heart" %}
@@ -55,7 +63,27 @@
 
             </div>
 
-            <div class="-mr-2 -my-2 ml-3 md:hidden block">
+            <div class="-mr-2 -my-2 ml-3 md:hidden flex gap-2 items-center">
+                {% if customer %}
+
+                    <a href="{{ routes.account_url }}" class="text-gray-500 hover:text-gray-900">
+                        {% render "user" %}
+                    </a>
+
+                    {% else %}
+                    <a href="{{ routes.account_login_url }}" class="text-gray-500 hover:text-gray-900">
+                        {% render "user" %}
+                    </a>
+                {% endif %}
+
+                <a href="/pages/wishlist" class="text-gray-500 hover:text-gray-900">
+                    {% render "icon-heart" %}
+                </a>
+
+                <a href="{{ routes.cart_url }}" class="text-gray-500 hover:text-gray-900">
+                    {% render "cart" %}
+                </a>
+
                 <button x-on:click=" mobileMenuOpen = true" type="button"
                     class="hamburger text-black p-2 inline-flex items-center justify-center focus:outline-none">
                     {% render "hamburger" %}

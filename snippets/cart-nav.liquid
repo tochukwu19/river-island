@@ -1,5 +1,5 @@
 <div class="flex justify-start items-center text-lg font-bold gap-8 mt-8 mb-8">
-  <a href="/cart" class="flex items-center gap-2 {% if template.name == "cart" %} text-[#777] {% endif %}">
+  <a href="{{ routes.cart_url }}" class="flex items-center gap-2 {% if template.name == "cart" %} text-[#777] {% endif %}">
     <p>Your Cart</p>
     <span>{{ cart.item_count | prepend: '00' | slice: -2, 2 }}</span>
   </a>

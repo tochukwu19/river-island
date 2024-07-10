@@ -1,0 +1,109 @@
+<style></style>
+
+<div class="cwidth" x-data="{accountState: 'account'}">
+  <div class="flex flex-col md:flex-row justify-start md:gap-16 items-center text-lg font-bold gap-4 mt-8 mb-8">
+    <a @click="accountState = 'account'" class="cursor-pointer select-none flex items-center gap-2 {% if template.name == "account" %} text-[#777] {% endif %}">
+      <p>Account Details</p>
+    </a>
+
+    <a @click="accountState = 'orders'" class="cursor-pointer select-none flex items-center gap-2 {% if template.name == "order" %} text-[#777] {% endif %}">
+      <p>Order history</p>
+      <span>{{ customer.orders_count | prepend: '00' | slice: -2, 2 }}</span>
+    </a>
+  </div>
+
+  <div
+    class="w-[90%] md:w-[40%]"
+    x-show="accountState === 'account'"
+    x-cloak>
+    {% if customer.default_address %}
+      <h2 class="font-bold text-lg">Address</h2>
+      <div class="flex flex-col md:flex-row my-2 md:my-0 justify-between md:gap-16 md:items-center">
+        <p class="text-[#777]">Line 1</p>
+        <p>{{ customer.default_address.address1 }}</p>
+      </div>
+
+      {% if customer.default_address.address2 != "" %}
+        <div class="flex flex-col md:flex-row my-2 md:my-0 justify-between md:gap-16 md:items-center">
+          <p class="text-[#777]">Line 2</p>
+          <p>{{ customer.default_address.address2 }}</p>
+        </div>
+      {% endif %}
+
+      <div class="flex flex-col md:flex-row my-2 md:my-0 justify-between md:gap-16 md:items-center">
+        <p class="text-[#777]">City</p>
+        <p>{{ customer.default_address.city }},
+          {% if address.province_code %}
+            {{ customer.default_address.province_code }},
+          {% endif %}
+          {{ customer.default_address.country }}</p>
+      </div>
+
+      <div class="flex flex-col md:flex-row my-2 md:my-0 justify-between md:gap-16 md:items-center">
+        <p class="text-[#777]">Zip</p>
+        <p>{{ customer.default_address.zip }}</p>
+      </div>
+
+      <div class="flex flex-col md:flex-row my-2 md:my-0 justify-between md:gap-16 md:items-center">
+        <p class="text-[#777]">Email</p>
+        <p>{{ customer.email }}</p>
+      </div>
+
+      {% if customer.default_address.phone %}
+        <div class="flex flex-col md:flex-row my-2 md:my-0 justify-between md:gap-16 md:items-center">
+          <p class="text-[#777]">Phone</p>
+          <p>{{ customer.default_address.phone }}</p>
+        </div>
+      {% endif %}
+
+      <a class="underline block mt-4 text-lg font-bold" href="{{ routes.account_addresses_url }}">View addresses</a>
+
+    {% else %}
+      <p>No default address</p>
+    {% endif %}
+  </div>
+
+  <div
+    class="w-[90%] md:w-[50%]"
+    x-show="accountState === 'orders'"
+    x-cloak>
+    <h2 class="font-bold text-lg">Orders</h2>
+    {% paginate customer.orders by 4 %}
+      {% for order in customer.orders %}
+        <!-- order info -->
+         <div class="my-4 flex items-center justify-start gap-8 md:gap-16 w-full">
+          <div class="h-[100px] w-[100px]">
+            {% if order.line_items.first.image %}
+              <img class="object-cover h-full w-full" src="{{ order.line_items.first.image |  img_url: 'medium' }}" alt="{{ order.line_items.first.image.alt }}"/>
+  
+              {% else %}
+  
+              {{ 'product-1' | placeholder_svg_tag: "object-cover h-full w-full" }}
+            {% endif %}
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center">
+              <h2>{{ order.name |  link_to: order.customer_url }}</h2>
+              <div class="rounded-full bg-[#E5E7EB] p-2 h-[26px] flex items-center">
+                <p class="">{{ order.item_count }}</p>
+              </div>
+            </div>
+            <div class="flex justify-between items-center gap-8">
+              <p class="">{{ order.financial_status_label }}</p>
+
+              <p class="text-gray-900">{{ order.created_at | date: "%B %d, %Y" }}</p>
+            </div>
+            <p class="text-lg text-[#777]">{{ order.line_items_subtotal_price |  money_with_currency }}</p>
+          </div>
+         </div>
+      {% endfor %}
+
+      <div>
+        {% render "pagination", pagination: paginate %}
+      </div>
+    {% endpaginate %}
+  </div>
+
+
+</div>

@@ -1,18 +1,11 @@
-{% if pagination.pages > 0 %}
-    <nav role="navigation" class="flex justify-center my-8">
-        <a href="{{ pagination.previous.url }}" class="mr-4 border border-[#CB8161] text-[#CB8161] hover:bg-[#CB8161] hover:text-white px-8 py-3 mx-1 rounded-sm font-medium {% if pagination.previous.url == blank %}pointer-events-none opacity-50{% endif %}">Previous</a>
-        
-            {% for part in pagination.parts %}
+{% if pagination.pages > 1 %}
+    <nav role="navigation" class="flex justify-center items-center my-8">
+        {% if pagination.previous %}
+            <a href="{{ pagination.previous.url }}" class="border border-gray-600 text-gray-600 hover:bg-gray-600 hover:text-white px-8 py-3 mx-1 rounded-sm font-medium">Previous</a>
+        {% endif %}
 
-                {% if part.is_link %}
-                    <a href="{{ part.url }}" class="mr-4 border border-[#CB8161] text-[#CB8161] hover:bg-[#CB8161] hover:text-white px-8 py-3 mx-1 rounded-sm font-medium ">{{ part.title }}</a>
-
-                    {% else %}
-                        <span class="mr-4 border border-[#CB8161] text-[#CB8161] hover:bg-[#CB8161] hover:text-white px-8 py-3 mx-1 rounded-sm font-medium">{{ part.title }}</span>
-                {% endif %}
-
-            {% endfor %}
-
-        <a href="{{ pagination.next.url }}" class="mr-4 border border-[#CB8161] text-[#CB8161] hover:bg-[#CB8161] hover:text-white px-8 py-3 mx-1 rounded-sm font-medium {% if pagination.next.url == blank %}pointer-events-none opacity-50{% endif %}">Next</a>
+        {% if pagination.next %}
+            <a href="{{ pagination.next.url }}" class="border border-gray-600 text-gray-600 hover:bg-gray-600 hover:text-white px-8 py-3 mx-1 rounded-sm font-medium">Next</a>
+        {% endif %}
     </nav>
 {% endif %}

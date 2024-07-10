@@ -1,18 +1,78 @@
-<!-- /templates/customers/activate_account.liquid -->
-{% form 'activate_customer_password' %}
-    {{ form.errors | default_errors }}
-    <div class="password">
-      <label for="password">Password</label>
-      <input type="password" name="customer[password]" />
+<style>
+  .register {
+    form {
+      display: flex;
+      flex-direction: column;
+
+      label:not([for="accepts-marketing"]) {
+        visibility: hidden;
+      }
+
+
+      input:not([type="submit"]) {
+        border-bottom: 1px solid #D1D5DB;
+        padding: 5px;
+        color: #000;
+        outline: none;
+      }
+
+      input:not([type="submit"]):focus {
+        border-bottom: 1px solid #000;
+      }
+
+      input::placeholder {
+        color: #D1D5DB;
+      }
+    }
+  }
+</style>
+
+<div class="cwidth flex !mt-16">
+  <div class="register w-[90%] md:w-[40%] mx-auto">
+    <div>
+      <h1 class="text-xl mb-4 font-bold">Enter new password</h1>
     </div>
-    <div class="password_confirm">
-      <label for="password_confirmation">Password Confirmation</label>
-      <input type="password" name="customer[password_confirmation]" />
-    </div>
-    <div class="action_bottom">
-      <input type="submit" value="Activate Account" />
-      <span>or</span>
-      <input type="submit" name="decline" value="Decline Invitation" />
-    </div>
+
+
+    {% form 'activate_customer_password' %}
+
+      <div class="mt-4">{{ form.errors | default_errors }}</div>
+
+      <div class="password">
+        <input
+          class="w-full"
+          type="password"
+          name="customer[password]"
+          placeholder="Enter new password"
+          id="password">
+        <label for="password">Password</label>
+      </div>
+
+      <div class="password_confirm">
+        <input
+          class="w-full"
+          type="password"
+          placeholder="Confirm password"
+          name="customer[password_confirmation]"
+          id="password_confirmation">
+        <label for="password_confirmation">Confirm password</label>
+      </div>
+
+      <div class="action_bottom flex flex-col md:flex-row gap-4">
+        <input
+          class="my-4 w-full inline-flex justify-center py-2 px-4 border shadow-sm text-sm font-medium hover:text-white hover:bg-black bg-white text-black border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          type="submit"
+          value="Activate Account" />
+
+        <span>or</span>
+
+        <input
+          class="my-4 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-black hover:bg-white hover:text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          type="submit"
+          name="decline"
+          value="Decline Invitation" />
+      </div>
+
     {% endform %}
-    
+  </div>
+</div>
