@@ -97,6 +97,14 @@
         }
       }
 
+      .address {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 320px));
+        gap: 20px;
+        @media only screen and (max-width: 400px) {
+          grid-template-columns: 1fr;
+        }
+      }
+
       .card {
         background-size: cover;
         background-position: center;

@@ -79,32 +79,32 @@
 
   <div class="register w-[90%] md:w-[40%] mx-auto md:mx-0">
     <div>
-      <h1 class="text-xl mb-4 font-bold">Already have an account</h1>
-      <p>Have an account already? Login by entering your details below</p>
+      <h1 class="text-xl mb-4 font-bold">{{ section.settings.already_have_account_title }}</h1>
+      <p>{{ section.settings.login_description }}</p>
     </div>
 
     {% form 'customer_login' %}
 
       <div class="mt-4">{{ form.errors | default_errors }}</div>
 
-      <label for="customer_email">Email Address</label>
+      <label for="customer_email">{{ section.settings.email_label }}</label>
       <input
         type="email"
-        placeholder="Enter email address"
+        placeholder="{{ section.settings.email_placeholder }}"
         name="customer[email]" />
 
-      <label for="customer_password">Password</label>
+      <label for="customer_password">{{ section.settings.password_label  }}</label>
       <input
         type="password"
-        placeholder="Password"
+        placeholder="{{ section.settings.password_placeholder }}"
         name="customer[password]" />
 
-      <button type="submit" class="my-4 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-black hover:bg-white hover:text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Sign in</button>
+      <button type="submit" class="my-4 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-black hover:bg-white hover:text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">{{ section.settings.sign_in_button }}</button>
 
       <div class="flex justify-between items-center my-4">
-        <a @click="showForgotPassword = !showForgotPassword" class="select-none font-bold cursor-pointer">Forgot password?</a>
+        <a @click="showForgotPassword = !showForgotPassword" class="select-none font-bold cursor-pointer">{{ section.settings.forgot_password }}</a>
 
-        <a class="font-bold text-left" href="{{ routes.root_url }}">Continue as guest</a>
+        <a class="font-bold text-left" href="{{ routes.root_url }}">{{ section.settings.continue_as_guest }}</a>
       </div>
     {% endform %}
 
@@ -112,7 +112,7 @@
       {% form 'recover_customer_password' %}
         {{ form.errors | default_errors }}
 
-        <p>A link will be sent to your email address for more information regarding resetting your password</p>
+        <p>{{ section.settings.forgot_password_description }}</p>
 
         <div class="email w-full">
           <label for="email">Email</label>
@@ -120,9 +120,83 @@
         </div>
 
         <div class="submit">
-          <button type="submit" class="my-4 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-black hover:bg-white hover:text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Submit</button>
+          <button type="submit" class="my-4 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-black hover:bg-white hover:text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">{{ section.settings.submit }}</button>
         </div>
       {% endform %}
     </div>
   </div>
 </div> 
+
+{% schema %}
+{
+  "name": "Customer Login",
+  "settings": [
+      {
+        "type": "text",
+        "id": "already_have_account_title",
+        "label": "Already have an account title",
+        "default": "Already have an account"
+      },
+      {
+        "type": "text",
+        "id": "login_description",
+        "label": "Login description",
+        "default": "Have an account already? Login by entering your details below"
+      },
+      {
+        "type": "text",
+        "id": "email_label",
+        "label": "Email label",
+        "default": "Email Address"
+      },
+      {
+        "type": "text",
+        "id": "email_placeholder",
+        "label": "Email placeholder",
+        "default": "Enter email address"
+      },
+      {
+        "type": "text",
+        "id": "password_label",
+        "label": "Password label",
+        "default": "Password"
+      },
+      {
+        "type": "text",
+        "id": "password_placeholder",
+        "label": "Password placeholder",
+        "default": "Password"
+      },
+      {
+        "type": "text",
+        "id": "sign_in_button",
+        "label": "Sign in button",
+        "default": "Sign in"
+      },
+      {
+        "type": "text",
+        "id": "forgot_password",
+        "label": "Forgot password",
+        "default": "Forgot password?"
+      },
+      {
+        "type": "text",
+        "id": "continue_as_guest",
+        "label": "Continue as guest",
+        "default": "Continue as guest"
+      },
+      {
+        "type": "text",
+        "id": "forgot_password_description",
+        "label": "Forgot password description",
+        "default": "A link will be sent to your email address for more information regarding resetting your password"
+      },
+      {
+        "type": "text",
+        "id": "submit",
+        "label": "Submit",
+        "default": "Submit"
+      }
+    ]
+}
+{% endschema %}

@@ -1,23 +1,29 @@
-<style></style>
+<style>
+  .active-link {
+    color: {{ section.settings.active_nav_color }};
+  }
+</style>
 
-<div class="cwidth" x-data="{accountState: 'account'}">
+<div class="cwidth md:gap-32 flex flex-col md:flex-row items-start justify-start" x-data="{accountState: 'account'}">
   <div class="flex flex-col md:flex-row justify-start md:gap-16 items-center text-lg font-bold gap-4 mt-8 mb-8">
-    <a @click="accountState = 'account'" class="cursor-pointer select-none flex items-center gap-2 {% if template.name == "account" %} text-[#777] {% endif %}">
-      <p>Account Details</p>
+    <a @click="accountState = 'account'" x-bind:class="{ 'active-link': accountState === 'account' }" class="cursor-pointer select-none flex items-center gap-2">
+      <p>{{ section.settings.account_details_header }}</p>
     </a>
 
-    <a @click="accountState = 'orders'" class="cursor-pointer select-none flex items-center gap-2 {% if template.name == "order" %} text-[#777] {% endif %}">
-      <p>Order history</p>
-      <span>{{ customer.orders_count | prepend: '00' | slice: -2, 2 }}</span>
+    <a @click="accountState = 'orders'" x-bind:class="{ 'active-link': accountState === 'orders' }" class="cursor-pointer select-none flex items-center gap-2">
+      <p>{{ section.settings.order_history_header }}</p>
+      {% if section.settings.show_order_history_count %}
+        <span>{{ customer.orders_count | prepend: '00' | slice: -2, 2 }}</span>
+      {% endif %}
     </a>
   </div>
 
   <div
-    class="w-[90%] md:w-[40%]"
+    class="w-[90%] md:w-[40%] md:mt-8"
     x-show="accountState === 'account'"
     x-cloak>
     {% if customer.default_address %}
-      <h2 class="font-bold text-lg">Address</h2>
+      <h2 class="font-bold text-lg mb-4">{{ section.settings.address_header  }}</h2>
       <div class="flex flex-col md:flex-row my-2 md:my-0 justify-between md:gap-16 md:items-center">
         <p class="text-[#777]">Line 1</p>
         <p>{{ customer.default_address.address1 }}</p>
@@ -64,11 +70,11 @@
   </div>
 
   <div
-    class="w-[90%] md:w-[50%]"
+    class="w-[90%] md:w-[50%] md:mt-8"
     x-show="accountState === 'orders'"
     x-cloak>
-    <h2 class="font-bold text-lg">Orders</h2>
-    {% paginate customer.orders by 4 %}
+    <h2 class="font-bold text-lg">{{ section.settings.order_header }}</h2>
+    {% paginate customer.orders by section.settings.orders_per_page %}
       {% for order in customer.orders %}
         <!-- order info -->
          <div class="my-4 flex items-center justify-start gap-8 md:gap-16 w-full">
@@ -84,7 +90,7 @@
 
           <div>
             <div class="flex justify-between items-center">
-              <h2>{{ order.name |  link_to: order.customer_url }}</h2>
+              <h2 class="font-bold">{{ order.name |  link_to: order.customer_url }}</h2>
               <div class="rounded-full bg-[#E5E7EB] p-2 h-[26px] flex items-center">
                 <p class="">{{ order.item_count }}</p>
               </div>
@@ -104,6 +110,58 @@
       </div>
     {% endpaginate %}
   </div>
-
-
 </div>
+
+
+{% schema %}
+{
+  "name": "Customer account details",
+  "settings": [
+      {
+        "type": "text",
+        "id": "account_details_header",
+        "label": "Account details header",
+        "default": "Account details"
+      },
+      {
+        "type": "text",
+        "id": "order_history_header",
+        "label": "Order history header",
+        "default": "Order history"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_order_history_count",
+        "label": "Show order history count",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "active_nav_color",
+        "label": "Active nav color",
+        "default": "#777"
+      },
+      {
+        "type": "text",
+        "id": "address_header",
+        "label": "Address header",
+        "default": "Address"
+      },
+      {
+        "type": "text",
+        "id": "order_header",
+        "label": "Order header",
+        "default": "Order"
+      },
+      {
+        "type": "range",
+        "id": "orders_per_page",
+        "label": "Orders per page",
+        "default": 5,
+        "min": 1,
+        "step": 1,
+        "max": 10
+      }
+    ]
+}
+{% endschema %}

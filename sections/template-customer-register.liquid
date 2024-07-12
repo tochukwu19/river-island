@@ -74,39 +74,39 @@
 
   <div class="register w-[90%] md:w-[40%] mx-auto md:mx-0">
     <div>
-      <h1 class="text-xl mb-4 font-bold">Don't have an account</h1>
-      <p>Don't have a River Island account yet? Create now and enjoy all the benefits now!</p>
+      <h1 class="text-xl mb-4 font-bold">{{ section.settings.register_title }}</h1>
+      <p>{{ section.settings.register_description }}</p>
     </div>
 
     {% form 'create_customer' %}
 
       <div class="mt-4">{{ form.errors | default_errors }}</div>
 
-      <label for="email">Email Address</label>
+      <label for="email">{{ section.settings.email_label }}</label>
       <input
         type="email"
-        placeholder="Enter email address"
+        placeholder="{{ section.settings.email_placeholder }}"
         name="customer[email]"
         size="30" />
 
-      <label for="password">Password</label>
+      <label for="password">{{ section.settings.password_label }}</label>
       <input
         type="password"
-        placeholder="Create password"
+        placeholder="{{ section.settings.password_placeholder }}"
         name="customer[password]"
         size="30" />
 
-      <label for="first_name">First Name</label>
+      <label for="first_name">{{ section.settings.first_name_label }}</label>
       <input
         type="text"
-        placeholder="First name"
+        placeholder="{{ section.settings.first_name_placeholder }}"
         name="customer[first_name]"
         size="30" />
 
-      <label for="last_name">Last Name</label>
+      <label for="last_name">{{ section.settings.last_name_label }}</label>
       <input
         type="text"
-        placeholder="Last name"
+        placeholder="{{ section.settings.last_name_placeholder }}"
         name="customer[last_name]"
         size="30" />
 
@@ -119,11 +119,91 @@
         <label for="accepts-marketing" class="mt-4 check-container flex items-center">
           <input type="checkbox" id="accepts-marketing" name="customer[accepts_marketing]">
           <span class='checkmark'></span>
-          I wish to receive River Island news on my e-mail
+          {{ section.settings.accepts_marketing_label }}
         </label> 
       </div>
 
-      <button type="submit" class="my-4 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-black hover:bg-white hover:text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Create an account</button>
+      <button type="submit" class="my-4 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-black hover:bg-white hover:text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">{{ section.settings.submit }}</button>
     {% endform %}
   </div>
 </div>
+
+{% schema %}
+{
+  "name": "Customer Register",
+  "settings": [
+      {
+        "type": "text",
+        "id": "register_title",
+        "label": "Register title",
+        "default": "Don't have an account"
+      },
+      {
+        "type": "text",
+        "id": "register_description",
+        "label": "Register description",
+        "default": "Don't have a River Island account yet? Create now and enjoy all the benefits now!"
+      },
+      {
+        "type": "text",
+        "id": "email_label",
+        "label": "Email label",
+        "default": "Email Address"
+      },
+      {
+        "type": "text",
+        "id": "email_placeholder",
+        "label": "Email placeholder",
+        "default": "Enter email address"
+      },
+      {
+        "type": "text",
+        "id": "password_label",
+        "label": "Password label",
+        "default": "Password"
+      },
+      {
+        "type": "text",
+        "id": "password_placeholder",
+        "label": "Password placeholder",
+        "default": "Create password"
+      },
+      {
+        "type": "text",
+        "id": "first_name_label",
+        "label": "First Name label",
+        "default": "First Name"
+      },
+      {
+        "type": "text",
+        "id": "first_name_placeholder",
+        "label": "First Name placeholder",
+        "default": "First name"
+      },
+      {
+        "type": "text",
+        "id": "last_name_label",
+        "label": "Last Name label",
+        "default": "Last Name"
+      },
+      {
+        "type": "text",
+        "id": "last_name_placeholder",
+        "label": "Last Name placeholder",
+        "default": "Last name"
+      },
+      {
+        "type": "text",
+        "id": "accepts_marketing_label",
+        "label": "Accepts Marketing label",
+        "default": "I wish to receive River Island news on my e-mail"
+      },
+      {
+        "type": "text",
+        "id": "submit",
+        "label": "Submit button",
+        "default": "Create an account"
+      }
+    ]
+}
+{% endschema %}
